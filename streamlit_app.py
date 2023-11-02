@@ -17,13 +17,17 @@ roots = calculate_roots(n)  # 指定された次数nに対する解を計算
 
 # 複素数平面上に解をプロット
 fig, ax = plt.subplots(figsize=(8, 6))
-ax.plot(roots.real, roots.imag, 'ro', label=f'x^{n}=1の解')
+points = ax.plot(roots.real, roots.imag, 'ro', label=f'x^{n}=1の解')
 ax.set_xlabel('実部')
 ax.set_ylabel('虚部')
 ax.axhline(y=0, color='k', linewidth=0.5)  # 虚部が0の軸を描画
 ax.axvline(x=0, color='k', linewidth=0.5)  # 実部が0の軸を描画
 ax.set_title(f'複素数平面上の x^{n}=1 の解')
 ax.legend()
+
+# クリックした座標を表示するスポット
+spot = ax.plot([], [], 'bo')[0]
+
 st.pyplot(fig)
 
 # 解のテーブルを表示
@@ -31,3 +35,13 @@ st.header(f'x^{n}=1の解')
 st.table(list(zip(roots.real, roots.imag)))
 
 st.write(f'注意: 解は複素数平面上に均等に{n}個の点として配置されています。')
+
+# クリックしたときの座標を表示
+x, y = st.text_input('座標を入力 (x, y)', '').split(',')
+if x and y:
+    x, y = float(x), float(y)
+    if (x, y) in zip(roots.real, roots.imag):
+        spot.set_data(x, y)
+        st.write(f'選択した座標: ({x}, {y})')
+    else:
+        st.write('選択した座標は解の点ではありません。')
