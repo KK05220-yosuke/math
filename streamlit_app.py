@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 
 st.title('複素数平面上の x^n = a の解')
 
-# ユーザーから次数nと目標の値aを取得
+# ユーザーから次数nを取得
 n = st.slider('次数 (n)', min_value=1, max_value=10, value=2)
 a = st.number_input('目標の値 (a)', value=1.0)
 
 # 複素数平面上でx^n=aの解を計算する関数
 def calculate_roots(n, a):
     theta = np.linspace(0, 2*np.pi, n, endpoint=False)  # 0から2πまでの角度を均等にn個生成
-    roots = np.exp(1j * theta) * np.sqrt(a)  # 指定された次数nと目標の値aに対する解を計算
+    roots = np.exp(1j * theta * np.log(a) / n)  # 指定された次数nと目標の値aに対する解を計算
     return roots
 
 roots = calculate_roots(n, a)  # 指定された次数nと目標の値aに対する解を計算
